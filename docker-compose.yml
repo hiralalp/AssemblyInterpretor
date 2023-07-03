@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  mysql-db:
+    image: mysql:8
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=dcbapp
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=root
+    ports:
+      - 3306:3306
+    networks:
+      - assemblyLanguage
+
+  app:
+    image: hiralalp/assemblyinterpretor:0.0.1
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql-db
+    networks:
+      - assemblyLanguage
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/dcbapp?createDatabaseIfNotExists=true&allowPublicKeyRetrieval=true&autoReconnect=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=root
+
+networks:
+  assemblyLanguage:
